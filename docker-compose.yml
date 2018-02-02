@@ -5,8 +5,21 @@ volumes:
         driver: local
 
 services:
-    slim:
-        image: php:7-alpine
+    db:
+        container_name: mysql
+        build:
+            context: .
+            dockerfile: DB_Dockerfile
+        restart: always
+        ports:
+            - "3306:3306"
+        environment:
+          MYSQL_ROOT_PASSWORD: password
+
+    slim: 
+        build:
+            context: .
+            dockerfile: Dockerfile
         working_dir: /var/www
         command: php -S 0.0.0.0:8080 -t public index.php
         environment:
@@ -16,3 +29,5 @@ services:
         volumes:
             - .:/var/www
             - logs:/var/www/logs
+        links:
+            - db

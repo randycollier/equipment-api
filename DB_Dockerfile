@@ -1,0 +1,3 @@
+FROM mysql:5.7.21
+
+COPY DataDump.sql /mysql/DataDump.sql
